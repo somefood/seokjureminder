@@ -1,8 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { Reminder } from "@/lib/types";
+import { Reminder, Priority } from "@/lib/types";
 import { useToggleDone, useUpdateReminder } from "@/hooks/useReminders";
+import { useUIStore } from "@/stores/uiStore";
+
+const PRIORITY_BADGE: Record<Priority, { label: string; color: string } | null> = {
+  NONE: null,
+  LOW: { label: "!", color: "#34C759" },
+  MEDIUM: { label: "!!", color: "#FF9500" },
+  HIGH: { label: "!!!", color: "#FF3B30" },
+};
+
+function DueDateLabel({ dueDate }: { dueDate: string }) {
+  const today = new Date().toISOString().split("T")[0];
+  const isToday = dueDate === today;
+  const isOverdue = dueDate < today;
+
+  const color = isOverdue ? "#FF3B30" : isToday ? "#007AFF" : "#8E8E93";
+  const label = isToday ? "오늘" : isOverdue ? dueDate : dueDate;
+
+  return (
+    <span style={{ fontSize: 12, color, flexShrink: 0 }}>{label}</span>
+  );
+}
 
 interface Props {
   reminder: Reminder;
@@ -13,14 +34,24 @@ export function ReminderItem({ reminder }: Props) {
   const [title, setTitle] = useState(reminder.title);
   const toggleDone = useToggleDone();
   const updateReminder = useUpdateReminder();
+  const { selectedReminderId, setSelectedReminderId } = useUIStore();
 
-  function handleCheck() {
+  const isSelected = selectedReminderId === reminder.id;
+  const badge = PRIORITY_BADGE[reminder.priority];
+
+  function handleCheck(e: React.MouseEvent) {
+    e.stopPropagation();
     toggleDone.mutate(reminder.id);
   }
 
-  function handleDoubleClick() {
+  function handleDoubleClick(e: React.MouseEvent) {
+    e.stopPropagation();
     setEditing(true);
     setTitle(reminder.title);
+  }
+
+  function handleClick() {
+    setSelectedReminderId(isSelected ? null : reminder.id);
   }
 
   function handleSave() {
@@ -37,14 +68,16 @@ export function ReminderItem({ reminder }: Props) {
 
   return (
     <div
+      onClick={handleClick}
       style={{
         display: "flex",
         alignItems: "center",
         gap: 12,
         padding: "8px 16px 8px 52px",
         borderBottom: "1px solid var(--color-separator)",
-        background: "var(--bg-card)",
+        background: isSelected ? "rgba(0,122,255,0.06)" : "var(--bg-card)",
         minHeight: 44,
+        cursor: "pointer",
       }}
       onDoubleClick={handleDoubleClick}
     >
@@ -55,7 +88,7 @@ export function ReminderItem({ reminder }: Props) {
           width: 22,
           height: 22,
           borderRadius: "50%",
-          border: reminder.isDone ? "none" : "2px solid var(--color-blue)",
+          border: reminder.isDone ? "none" : `2px solid ${badge ? badge.color : "var(--color-blue)"}`,
           background: reminder.isDone ? "var(--color-blue)" : "transparent",
           cursor: "pointer",
           flexShrink: 0,
@@ -80,6 +113,7 @@ export function ReminderItem({ reminder }: Props) {
           onChange={(e) => setTitle(e.target.value)}
           onBlur={handleSave}
           onKeyDown={handleKeyDown}
+          onClick={(e) => e.stopPropagation()}
           style={{
             flex: 1,
             border: "none",
@@ -103,6 +137,24 @@ export function ReminderItem({ reminder }: Props) {
           {reminder.title}
         </span>
       )}
+
+      {/* 우측: 마감일 + 우선순위 배지 */}
+      <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+        {reminder.dueDate && <DueDateLabel dueDate={reminder.dueDate} />}
+        {badge && (
+          <span
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              color: badge.color,
+              minWidth: 20,
+              textAlign: "right",
+            }}
+          >
+            {badge.label}
+          </span>
+        )}
+      </div>
     </div>
   );
 }

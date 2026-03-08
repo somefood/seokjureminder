@@ -1,6 +1,7 @@
 package seokju.ai.seokjureminder.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import seokju.ai.seokjureminder.domain.Priority;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,5 +11,6 @@ public record ReminderRequest(
         String note,
         Long listId,
         LocalDate dueDate,
-        LocalTime dueTime
+        LocalTime dueTime,
+        Priority priority
 ) {}

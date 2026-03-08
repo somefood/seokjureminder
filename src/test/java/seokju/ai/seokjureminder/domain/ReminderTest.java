@@ -51,7 +51,7 @@ class ReminderTest {
                     .note("원래 메모")
                     .build();
 
-            reminder.update("새 제목", "새 메모", null, null);
+            reminder.update("새 제목", "새 메모", null, null, null);
 
             assertThat(reminder.getTitle()).isEqualTo("새 제목");
             assertThat(reminder.getNote()).isEqualTo("새 메모");
@@ -65,7 +65,7 @@ class ReminderTest {
                     .note("원래 메모")
                     .build();
 
-            reminder.update(null, null, null, null);
+            reminder.update(null, null, null, null, null);
 
             assertThat(reminder.getTitle()).isEqualTo("원래 제목");
             assertThat(reminder.getNote()).isEqualTo("원래 메모");
@@ -79,7 +79,7 @@ class ReminderTest {
                     .note("원래 메모")
                     .build();
 
-            reminder.update("새 제목", null, null, null);
+            reminder.update("새 제목", null, null, null, null);
 
             assertThat(reminder.getTitle()).isEqualTo("새 제목");
             assertThat(reminder.getNote()).isEqualTo("원래 메모");

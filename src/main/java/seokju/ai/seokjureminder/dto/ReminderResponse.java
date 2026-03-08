@@ -1,5 +1,6 @@
 package seokju.ai.seokjureminder.dto;
 
+import seokju.ai.seokjureminder.domain.Priority;
 import seokju.ai.seokjureminder.domain.Reminder;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ public record ReminderResponse(
         Long listId,
         LocalDate dueDate,
         LocalTime dueTime,
+        Priority priority,
         LocalDateTime completedAt,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -27,6 +29,7 @@ public record ReminderResponse(
                 reminder.getList() != null ? reminder.getList().getId() : null,
                 reminder.getDueDate(),
                 reminder.getDueTime(),
+                reminder.getPriority(),
                 reminder.getCompletedAt(),
                 reminder.getCreatedAt(),
                 reminder.getUpdatedAt()

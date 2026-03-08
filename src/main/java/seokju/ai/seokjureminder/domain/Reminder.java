@@ -33,6 +33,10 @@ public class Reminder {
     @JoinColumn(name = "list_id")
     private ReminderList list;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Priority priority = Priority.NONE;
+
     private LocalDate dueDate;
 
     private LocalTime dueTime;
@@ -54,20 +58,22 @@ public class Reminder {
     }
 
     @Builder
-    public Reminder(String title, String note, ReminderList list, LocalDate dueDate, LocalTime dueTime) {
+    public Reminder(String title, String note, ReminderList list, LocalDate dueDate, LocalTime dueTime, Priority priority) {
         this.title = title;
         this.note = note;
         this.list = list;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
+        this.priority = priority != null ? priority : Priority.NONE;
         this.isDone = false;
     }
 
-    public void update(String title, String note, LocalDate dueDate, LocalTime dueTime) {
+    public void update(String title, String note, LocalDate dueDate, LocalTime dueTime, Priority priority) {
         if (title != null) this.title = title;
         if (note != null) this.note = note;
         this.dueDate = dueDate;
         this.dueTime = dueTime;
+        if (priority != null) this.priority = priority;
     }
 
     public void assignList(ReminderList list) {

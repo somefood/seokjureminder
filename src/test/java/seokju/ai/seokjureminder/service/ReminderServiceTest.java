@@ -167,7 +167,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("title과 note로 리마인더를 생성하고 반환한다")
         void createsReminder() {
-            ReminderResponse result = reminderService.create(new ReminderRequest("새 할 일", "메모", null, null, null));
+            ReminderResponse result = reminderService.create(new ReminderRequest("새 할 일", "메모", null, null, null, null));
 
             assertThat(result.id()).isNotNull();
             assertThat(result.title()).isEqualTo("새 할 일");
@@ -178,7 +178,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("생성된 리마인더는 DB에 저장된다")
         void savedToDatabase() {
-            ReminderResponse result = reminderService.create(new ReminderRequest("저장 확인", null, null, null, null));
+            ReminderResponse result = reminderService.create(new ReminderRequest("저장 확인", null, null, null, null, null));
 
             assertThat(reminderRepository.findById(result.id())).isPresent();
         }
@@ -193,7 +193,7 @@ class ReminderServiceTest {
         void updatesReminder() {
             Reminder saved = reminderRepository.save(Reminder.builder().title("원래 제목").note("원래 메모").build());
 
-            ReminderResponse result = reminderService.update(saved.getId(), new ReminderRequest("새 제목", "새 메모", null, null, null));
+            ReminderResponse result = reminderService.update(saved.getId(), new ReminderRequest("새 제목", "새 메모", null, null, null, null));
 
             assertThat(result.title()).isEqualTo("새 제목");
             assertThat(result.note()).isEqualTo("새 메모");
@@ -202,7 +202,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("존재하지 않는 id 수정 시 EntityNotFoundException을 던진다")
         void throwsWhenNotFound() {
-            assertThatThrownBy(() -> reminderService.update(99999L, new ReminderRequest("제목", null, null, null, null)))
+            assertThatThrownBy(() -> reminderService.update(99999L, new ReminderRequest("제목", null, null, null, null, null)))
                     .isInstanceOf(EntityNotFoundException.class);
         }
     }

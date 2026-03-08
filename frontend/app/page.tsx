@@ -2,7 +2,9 @@
 
 import { useUIStore, View } from "@/stores/uiStore";
 import { ReminderList } from "@/components/reminder/ReminderList";
+import { DetailPanel } from "@/components/reminder/DetailPanel";
 import { useLists } from "@/hooks/useLists";
+import { useReminders } from "@/hooks/useReminders";
 
 const VIEW_LABELS: Record<string, string> = {
   today: "오늘",
@@ -28,7 +30,7 @@ function getViewColor(view: View, listColor?: string): string {
 }
 
 export default function Home() {
-  const { selectedView, searchQuery } = useUIStore();
+  const { selectedView, searchQuery, selectedReminderId, setSelectedReminderId } = useUIStore();
   const { data: lists = [] } = useLists();
 
   const currentList =
@@ -44,19 +46,27 @@ export default function Home() {
       ? { listId: selectedView.listId, q: searchQuery || undefined }
       : { view: selectedView, q: searchQuery || undefined };
 
+  // fetch all reminders for the current view to find the selected one
+  const { data: reminders = [] } = useReminders(params);
+  const selectedReminder = reminders.find((r) => r.id === selectedReminderId);
+
   return (
-    <div style={{ padding: "32px 24px", maxWidth: 680 }}>
-      <h1
-        style={{
-          fontSize: 28,
-          fontWeight: 700,
-          color,
-          marginBottom: 20,
-        }}
-      >
-        {title}
-      </h1>
-      <ReminderList params={params} />
+    <div style={{ display: "flex", height: "100%", overflow: "hidden" }}>
+      <div style={{ flex: 1, overflow: "auto", padding: "32px 24px" }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700, color, marginBottom: 20 }}>
+          {title}
+        </h1>
+        <div style={{ maxWidth: 640 }}>
+          <ReminderList params={params} />
+        </div>
+      </div>
+
+      {selectedReminder && (
+        <DetailPanel
+          reminder={selectedReminder}
+          onClose={() => setSelectedReminderId(null)}
+        />
+      )}
     </div>
   );
 }

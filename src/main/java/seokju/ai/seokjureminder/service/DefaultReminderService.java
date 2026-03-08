@@ -70,7 +70,7 @@ public class DefaultReminderService implements ReminderService {
     @Transactional
     public ReminderResponse update(Long id, ReminderRequest request) {
         Reminder reminder = getReminder(id);
-        reminder.update(request.title(), request.note(), request.dueDate(), request.dueTime());
+        reminder.update(request.title(), request.note(), request.dueDate(), request.dueTime(), request.priority());
         if (request.listId() != null) {
             reminder.assignList(resolveList(request.listId()));
         }
