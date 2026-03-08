@@ -7,12 +7,12 @@
 ## Phase 1 — 백엔드 기초 CRUD
 
 ### 환경 설정
-- [ ] `build.gradle.kts`에 `spring-boot-starter-web` 추가
-- [ ] `build.gradle.kts`에 `spring-boot-starter-validation` 추가
-- [ ] `application.properties` H2 인메모리 DB 설정
-- [ ] `application.properties` JPA DDL auto / show-sql 설정
-- [ ] `application.properties` H2 콘솔 활성화 (`/h2-console`)
-- [ ] CORS 설정 (`localhost:3000` 허용) — `WebMvcConfigurer`
+- [x] `build.gradle.kts`에 `spring-boot-starter-web` 추가
+- [x] `build.gradle.kts`에 `spring-boot-starter-validation` 추가
+- [x] `application.properties` H2 인메모리 DB 설정
+- [x] `application.properties` JPA DDL auto / show-sql 설정
+- [x] `application.properties` H2 콘솔 활성화 (`/h2-console`)
+- [x] CORS 설정 (`localhost:3000` 허용) — `WebMvcConfigurer`
 
 ### Reminder Entity
 - [ ] `domain/Reminder.java` Entity 생성
