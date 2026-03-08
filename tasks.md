@@ -23,27 +23,30 @@
   - [x] `createdAt`, `updatedAt` (`@PrePersist`, `@PreUpdate`)
 
 ### Repository / Service / Controller
-- [ ] `repository/ReminderRepository.java` (JpaRepository)
-- [ ] `dto/ReminderRequest.java` (생성/수정 요청 DTO)
-- [ ] `dto/ReminderResponse.java` (응답 DTO)
-- [ ] `service/ReminderService.java`
-  - [ ] `findAll()`
-  - [ ] `findById()`
-  - [ ] `create()`
-  - [ ] `update()`
-  - [ ] `delete()`
-  - [ ] `toggleDone()`
-- [ ] `controller/ReminderController.java`
-  - [ ] `GET /api/reminders`
-  - [ ] `POST /api/reminders`
-  - [ ] `PATCH /api/reminders/{id}`
-  - [ ] `PATCH /api/reminders/{id}/done`
-  - [ ] `DELETE /api/reminders/{id}`
+- [x] `repository/ReminderRepository.java` (JpaRepository)
+- [x] `dto/ReminderRequest.java` (생성/수정 요청 DTO)
+- [x] `dto/ReminderResponse.java` (응답 DTO)
+- [x] `service/ports/in/ReminderService.java` 인터페이스 + `service/DefaultReminderService.java` 구현체
+  - [x] `findAll()`
+  - [x] `findById()`
+  - [x] `create()`
+  - [x] `update()`
+  - [x] `delete()`
+  - [x] `toggleDone()`
+- [x] `controller/ReminderController.java`
+  - [x] `GET /api/reminders`
+  - [x] `GET /api/reminders/{id}`
+  - [x] `POST /api/reminders`
+  - [x] `PATCH /api/reminders/{id}`
+  - [x] `PATCH /api/reminders/{id}/done`
+  - [x] `DELETE /api/reminders/{id}`
+- [x] `controller/GlobalExceptionHandler.java` (404, 400 처리)
+- [x] `openapi.yml` OpenAPI 3.1 스펙 작성
 
 ### 시드 데이터 & 검증
 - [ ] `resources/data.sql` 초기 샘플 데이터 작성
-- [ ] 서버 기동 확인 (`./gradlew bootRun`)
-- [ ] H2 콘솔에서 테이블/데이터 확인
+- [x] 서버 기동 확인 (`./gradlew bootRun`)
+- [x] H2 콘솔에서 테이블/데이터 확인
 - [ ] curl로 전체 엔드포인트 동작 확인
 
 ---

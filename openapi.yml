@@ -1,0 +1,218 @@
+openapi: 3.1.0
+info:
+  title: SeokjuReminder API
+  description: Apple Reminder 웹 버전 REST API
+  version: 1.0.0
+  contact:
+    name: SeokjuReminder
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Reminders
+    description: 리마인더 관리
+
+paths:
+  /api/reminders:
+    get:
+      tags: [Reminders]
+      summary: 리마인더 목록 조회
+      operationId: getReminders
+      responses:
+        "200":
+          description: 리마인더 목록 반환
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReminderResponse"
+
+    post:
+      tags: [Reminders]
+      summary: 리마인더 생성
+      operationId: createReminder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReminderRequest"
+      responses:
+        "201":
+          description: 생성된 리마인더 반환
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderResponse"
+        "400":
+          description: 유효성 검사 실패
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/reminders/{id}:
+    get:
+      tags: [Reminders]
+      summary: 리마인더 단건 조회
+      operationId: getReminder
+      parameters:
+        - $ref: "#/components/parameters/ReminderId"
+      responses:
+        "200":
+          description: 리마인더 반환
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderResponse"
+        "404":
+          description: 리마인더를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    patch:
+      tags: [Reminders]
+      summary: 리마인더 수정
+      operationId: updateReminder
+      parameters:
+        - $ref: "#/components/parameters/ReminderId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReminderRequest"
+      responses:
+        "200":
+          description: 수정된 리마인더 반환
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderResponse"
+        "400":
+          description: 유효성 검사 실패
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: 리마인더를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      tags: [Reminders]
+      summary: 리마인더 삭제
+      operationId: deleteReminder
+      parameters:
+        - $ref: "#/components/parameters/ReminderId"
+      responses:
+        "204":
+          description: 삭제 성공 (응답 본문 없음)
+        "404":
+          description: 리마인더를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/reminders/{id}/done:
+    patch:
+      tags: [Reminders]
+      summary: 리마인더 완료 토글
+      operationId: toggleReminderDone
+      parameters:
+        - $ref: "#/components/parameters/ReminderId"
+      responses:
+        "200":
+          description: 완료 상태가 변경된 리마인더 반환
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderResponse"
+        "404":
+          description: 리마인더를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  parameters:
+    ReminderId:
+      name: id
+      in: path
+      required: true
+      description: 리마인더 ID
+      schema:
+        type: integer
+        format: int64
+        example: 1
+
+  schemas:
+    ReminderRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: 리마인더 제목
+          minLength: 1
+          example: "장보기"
+        note:
+          type: string
+          description: 메모 (선택)
+          nullable: true
+          example: "우유, 계란, 빵"
+
+    ReminderResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 리마인더 ID
+          example: 1
+        title:
+          type: string
+          description: 리마인더 제목
+          example: "장보기"
+        note:
+          type: string
+          description: 메모
+          nullable: true
+          example: "우유, 계란, 빵"
+        isDone:
+          type: boolean
+          description: 완료 여부
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          description: 생성 일시
+          example: "2026-03-08T10:00:00"
+        updatedAt:
+          type: string
+          format: date-time
+          description: 수정 일시
+          example: "2026-03-08T10:00:00"
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP 상태 코드
+          example: 400
+        message:
+          type: string
+          description: 에러 메시지
+          example: "제목은 필수입니다"
