@@ -1,4 +1,4 @@
-import { Reminder, ReminderRequest } from "./types";
+import { Reminder, ReminderRequest, ReminderList, ReminderListRequest } from "./types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
@@ -17,7 +17,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   reminders: {
-    list: () => request<Reminder[]>("/api/reminders"),
+    list: (listId?: number) =>
+      request<Reminder[]>(`/api/reminders${listId != null ? `?listId=${listId}` : ""}`),
     get: (id: number) => request<Reminder>(`/api/reminders/${id}`),
     create: (body: ReminderRequest) =>
       request<Reminder>("/api/reminders", { method: "POST", body: JSON.stringify(body) }),
@@ -27,5 +28,15 @@ export const api = {
       request<Reminder>(`/api/reminders/${id}/done`, { method: "PATCH" }),
     delete: (id: number) =>
       request<void>(`/api/reminders/${id}`, { method: "DELETE" }),
+  },
+  lists: {
+    list: () => request<ReminderList[]>("/api/lists"),
+    get: (id: number) => request<ReminderList>(`/api/lists/${id}`),
+    create: (body: ReminderListRequest) =>
+      request<ReminderList>("/api/lists", { method: "POST", body: JSON.stringify(body) }),
+    update: (id: number, body: ReminderListRequest) =>
+      request<ReminderList>(`/api/lists/${id}`, { method: "PATCH", body: JSON.stringify(body) }),
+    delete: (id: number) =>
+      request<void>(`/api/lists/${id}`, { method: "DELETE" }),
   },
 };

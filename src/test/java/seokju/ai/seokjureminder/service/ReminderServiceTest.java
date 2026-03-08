@@ -45,7 +45,7 @@ class ReminderServiceTest {
             reminderRepository.save(Reminder.builder().title("장보기").note("우유").build());
             reminderRepository.save(Reminder.builder().title("운동").build());
 
-            List<ReminderResponse> result = reminderService.findAll();
+            List<ReminderResponse> result = reminderService.findAll(null);
 
             assertThat(result).hasSize(2);
             assertThat(result).extracting(ReminderResponse::title)
@@ -55,7 +55,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("리마인더가 없으면 빈 목록을 반환한다")
         void returnsEmptyListWhenNoReminders() {
-            List<ReminderResponse> result = reminderService.findAll();
+            List<ReminderResponse> result = reminderService.findAll(null);
 
             assertThat(result).isEmpty();
         }
@@ -92,7 +92,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("title과 note로 리마인더를 생성하고 반환한다")
         void createsReminder() {
-            ReminderResponse result = reminderService.create(new ReminderRequest("새 할 일", "메모"));
+            ReminderResponse result = reminderService.create(new ReminderRequest("새 할 일", "메모", null));
 
             assertThat(result.id()).isNotNull();
             assertThat(result.title()).isEqualTo("새 할 일");
@@ -103,7 +103,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("생성된 리마인더는 DB에 저장된다")
         void savedToDatabase() {
-            ReminderResponse result = reminderService.create(new ReminderRequest("저장 확인", null));
+            ReminderResponse result = reminderService.create(new ReminderRequest("저장 확인", null, null));
 
             assertThat(reminderRepository.findById(result.id())).isPresent();
         }
@@ -118,7 +118,7 @@ class ReminderServiceTest {
         void updatesReminder() {
             Reminder saved = reminderRepository.save(Reminder.builder().title("원래 제목").note("원래 메모").build());
 
-            ReminderResponse result = reminderService.update(saved.getId(), new ReminderRequest("새 제목", "새 메모"));
+            ReminderResponse result = reminderService.update(saved.getId(), new ReminderRequest("새 제목", "새 메모", null));
 
             assertThat(result.title()).isEqualTo("새 제목");
             assertThat(result.note()).isEqualTo("새 메모");
@@ -127,7 +127,7 @@ class ReminderServiceTest {
         @Test
         @DisplayName("존재하지 않는 id 수정 시 EntityNotFoundException을 던진다")
         void throwsWhenNotFound() {
-            assertThatThrownBy(() -> reminderService.update(99999L, new ReminderRequest("제목", null)))
+            assertThatThrownBy(() -> reminderService.update(99999L, new ReminderRequest("제목", null, null)))
                     .isInstanceOf(EntityNotFoundException.class);
         }
     }

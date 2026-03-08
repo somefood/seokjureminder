@@ -9,27 +9,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "reminders")
+@Table(name = "reminder_lists")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Reminder {
+public class ReminderList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(columnDefinition = "TEXT")
-    private String note;
+    private String name;
 
     @Column(nullable = false)
-    private Boolean isDone = false;
+    private String color = "#007AFF";
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "list_id")
-    private ReminderList list;
+    private String icon;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -46,23 +41,15 @@ public class Reminder {
     }
 
     @Builder
-    public Reminder(String title, String note, ReminderList list) {
-        this.title = title;
-        this.note = note;
-        this.list = list;
-        this.isDone = false;
+    public ReminderList(String name, String color, String icon) {
+        this.name = name;
+        this.color = color != null ? color : "#007AFF";
+        this.icon = icon;
     }
 
-    public void update(String title, String note) {
-        if (title != null) this.title = title;
-        if (note != null) this.note = note;
-    }
-
-    public void assignList(ReminderList list) {
-        this.list = list;
-    }
-
-    public void toggleDone() {
-        this.isDone = !this.isDone;
+    public void update(String name, String color, String icon) {
+        if (name != null) this.name = name;
+        if (color != null) this.color = color;
+        if (icon != null) this.icon = icon;
     }
 }

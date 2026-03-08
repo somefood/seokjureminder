@@ -9,6 +9,7 @@ public record ReminderResponse(
         String title,
         String note,
         Boolean isDone,
+        Long listId,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -18,6 +19,7 @@ public record ReminderResponse(
                 reminder.getTitle(),
                 reminder.getNote(),
                 reminder.getIsDone(),
+                reminder.getList() != null ? reminder.getList().getId() : null,
                 reminder.getCreatedAt(),
                 reminder.getUpdatedAt()
         );

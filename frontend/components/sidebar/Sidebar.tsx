@@ -1,18 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import { useUIStore } from "@/stores/uiStore";
 import { useReminders } from "@/hooks/useReminders";
+import { useLists, useCreateList, useDeleteList } from "@/hooks/useLists";
 
 const SMART_LISTS = [
-  { key: "today" as const, label: "오늘", color: "#007AFF", bg: "#007AFF" },
-  { key: "scheduled" as const, label: "예정", color: "#FF3B30", bg: "#FF3B30" },
-  { key: "all" as const, label: "전체", color: "#8E8E93", bg: "#8E8E93" },
-  { key: "completed" as const, label: "완료됨", color: "#8E8E93", bg: "#8E8E93" },
+  { key: "today" as const, label: "오늘", bg: "#007AFF" },
+  { key: "scheduled" as const, label: "예정", bg: "#FF3B30" },
+  { key: "all" as const, label: "전체", bg: "#8E8E93" },
+  { key: "completed" as const, label: "완료됨", bg: "#8E8E93" },
 ];
 
 export function Sidebar() {
   const { selectedView, setSelectedView } = useUIStore();
   const { data: reminders = [] } = useReminders();
+  const { data: lists = [] } = useLists();
+  const createList = useCreateList();
+  const deleteList = useDeleteList();
+
+  const [addingList, setAddingList] = useState(false);
+  const [newListName, setNewListName] = useState("");
 
   const counts = {
     today: reminders.filter((r) => !r.isDone).length,
@@ -20,6 +28,17 @@ export function Sidebar() {
     all: reminders.filter((r) => !r.isDone).length,
     completed: reminders.filter((r) => r.isDone).length,
   };
+
+  function handleAddList() {
+    const name = newListName.trim();
+    if (!name) return;
+    createList.mutate({ name }, {
+      onSuccess: () => {
+        setNewListName("");
+        setAddingList(false);
+      },
+    });
+  }
 
   return (
     <aside
@@ -105,7 +124,7 @@ export function Sidebar() {
       </div>
 
       {/* 나의 목록 */}
-      <div>
+      <div style={{ flex: 1 }}>
         <div
           style={{
             fontSize: 11,
@@ -119,10 +138,110 @@ export function Sidebar() {
         >
           나의 목록
         </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {lists.map((list) => {
+            const isSelected =
+              typeof selectedView === "object" && selectedView.listId === list.id;
+            return (
+              <div
+                key={list.id}
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <button
+                  onClick={() => setSelectedView({ listId: list.id })}
+                  style={{
+                    flex: 1,
+                    background: isSelected ? "rgba(0,0,0,0.06)" : "none",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "8px 8px",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      background: list.color,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 14,
+                      color: "#fff",
+                      flexShrink: 0,
+                    }}
+                  >
+                    ≡
+                  </div>
+                  <span style={{ fontSize: 15, color: "var(--color-label)", flex: 1 }}>
+                    {list.name}
+                  </span>
+                  <span
+                    style={{ fontSize: 15, color: "var(--color-gray)", fontWeight: 600 }}
+                  >
+                    {list.count}
+                  </span>
+                </button>
+                <button
+                  onClick={() => deleteList.mutate(list.id)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "var(--color-gray)",
+                    fontSize: 16,
+                    cursor: "pointer",
+                    padding: "4px 6px",
+                    borderRadius: 6,
+                    opacity: 0.6,
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* 새 목록 입력 */}
+        {addingList && (
+          <div style={{ padding: "4px 8px" }}>
+            <input
+              autoFocus
+              value={newListName}
+              onChange={(e) => setNewListName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleAddList();
+                if (e.key === "Escape") {
+                  setAddingList(false);
+                  setNewListName("");
+                }
+              }}
+              placeholder="목록 이름"
+              style={{
+                width: "100%",
+                border: "1px solid var(--color-blue)",
+                borderRadius: 8,
+                padding: "6px 10px",
+                fontSize: 15,
+                outline: "none",
+                background: "var(--bg-card)",
+                color: "var(--color-label)",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+        )}
       </div>
 
-      <div style={{ marginTop: "auto", paddingLeft: 8 }}>
+      <div style={{ paddingLeft: 8 }}>
         <button
+          onClick={() => setAddingList(true)}
           style={{
             background: "none",
             border: "none",

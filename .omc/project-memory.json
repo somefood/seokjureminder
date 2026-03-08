@@ -1,0 +1,226 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1772942509139,
+  "projectRoot": "/Users/seokjuhong/seokjureminder",
+  "techStack": {
+    "languages": [
+      {
+        "name": "Kotlin",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "build.gradle.kts"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "gradle",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "build": {
+      "path": "build",
+      "purpose": "Build output",
+      "fileCount": 1,
+      "lastAccessed": 1772942509128,
+      "keyFiles": [
+        "resolvedMainClassName"
+      ]
+    },
+    "frontend": {
+      "path": "frontend",
+      "purpose": null,
+      "fileCount": 9,
+      "lastAccessed": 1772942509128,
+      "keyFiles": [
+        "README.md",
+        "eslint.config.mjs",
+        "next-env.d.ts",
+        "next.config.ts",
+        "package-lock.json"
+      ]
+    },
+    "gradle": {
+      "path": "gradle",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1772942509128,
+      "keyFiles": []
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 0,
+      "lastAccessed": 1772942509128,
+      "keyFiles": []
+    },
+    "frontend/app": {
+      "path": "frontend/app",
+      "purpose": "Application code",
+      "fileCount": 5,
+      "lastAccessed": 1772942509129,
+      "keyFiles": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx"
+      ]
+    },
+    "frontend/components": {
+      "path": "frontend/components",
+      "purpose": "UI components",
+      "fileCount": 0,
+      "lastAccessed": 1772942509129,
+      "keyFiles": []
+    },
+    "frontend/lib": {
+      "path": "frontend/lib",
+      "purpose": "Library code",
+      "fileCount": 2,
+      "lastAccessed": 1772942509129,
+      "keyFiles": [
+        "api.ts",
+        "types.ts"
+      ]
+    },
+    "src/test": {
+      "path": "src/test",
+      "purpose": "Test files",
+      "fileCount": 0,
+      "lastAccessed": 1772942509129,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "src/test/java/seokju/ai/seokjureminder/service/ReminderServiceTest.java",
+      "accessCount": 7,
+      "lastAccessed": 1772942569546,
+      "type": "file"
+    },
+    {
+      "path": "src/main/resources/data.sql",
+      "accessCount": 2,
+      "lastAccessed": 1772942655950,
+      "type": "file"
+    },
+    {
+      "path": "frontend/lib/types.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772942661052,
+      "type": "file"
+    },
+    {
+      "path": "frontend/lib/api.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772942666140,
+      "type": "file"
+    },
+    {
+      "path": "frontend/hooks/useReminders.ts",
+      "accessCount": 2,
+      "lastAccessed": 1772942698699,
+      "type": "file"
+    },
+    {
+      "path": "frontend/components/sidebar/Sidebar.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1772942731920,
+      "type": "file"
+    },
+    {
+      "path": "openapi.yml",
+      "accessCount": 2,
+      "lastAccessed": 1772942778333,
+      "type": "file"
+    },
+    {
+      "path": "src/test/java/seokju/ai/seokjureminder/controller/ReminderControllerTest.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942513144,
+      "type": "file"
+    },
+    {
+      "path": "src/main/java/seokju/ai/seokjureminder/domain/ReminderList.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942586925,
+      "type": "file"
+    },
+    {
+      "path": "src/main/java/seokju/ai/seokjureminder/service/DefaultReminderListService.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942592280,
+      "type": "file"
+    },
+    {
+      "path": "src/main/java/seokju/ai/seokjureminder/dto/ReminderListRequest.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942592886,
+      "type": "file"
+    },
+    {
+      "path": "src/main/java/seokju/ai/seokjureminder/dto/ReminderListResponse.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942593070,
+      "type": "file"
+    },
+    {
+      "path": "src/test/java/seokju/ai/seokjureminder/service/ReminderListServiceTest.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942617119,
+      "type": "file"
+    },
+    {
+      "path": "src/main/java/seokju/ai/seokjureminder/controller/ReminderListController.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942620659,
+      "type": "file"
+    },
+    {
+      "path": "src/test/java/seokju/ai/seokjureminder/controller/ReminderListControllerTest.java",
+      "accessCount": 1,
+      "lastAccessed": 1772942643403,
+      "type": "file"
+    },
+    {
+      "path": "frontend/components/reminder/ReminderList.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1772942675153,
+      "type": "file"
+    },
+    {
+      "path": "frontend/stores/uiStore.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772942681168,
+      "type": "file"
+    },
+    {
+      "path": "frontend/hooks/useLists.ts",
+      "accessCount": 1,
+      "lastAccessed": 1772942688131,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

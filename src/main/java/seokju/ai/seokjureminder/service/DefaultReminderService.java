@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seokju.ai.seokjureminder.domain.Reminder;
+import seokju.ai.seokjureminder.domain.ReminderList;
 import seokju.ai.seokjureminder.dto.ReminderRequest;
 import seokju.ai.seokjureminder.dto.ReminderResponse;
-import seokju.ai.seokjureminder.service.ports.in.ReminderService;
+import seokju.ai.seokjureminder.repository.ReminderListRepository;
 import seokju.ai.seokjureminder.repository.ReminderRepository;
+import seokju.ai.seokjureminder.service.ports.in.ReminderService;
 
 import java.util.List;
 
@@ -18,12 +20,14 @@ import java.util.List;
 public class DefaultReminderService implements ReminderService {
 
     private final ReminderRepository reminderRepository;
+    private final ReminderListRepository reminderListRepository;
 
     @Override
-    public List<ReminderResponse> findAll() {
-        return reminderRepository.findAll().stream()
-                .map(ReminderResponse::from)
-                .toList();
+    public List<ReminderResponse> findAll(Long listId) {
+        List<Reminder> reminders = listId != null
+                ? reminderRepository.findByListId(listId)
+                : reminderRepository.findAll();
+        return reminders.stream().map(ReminderResponse::from).toList();
     }
 
     @Override
@@ -34,9 +38,11 @@ public class DefaultReminderService implements ReminderService {
     @Override
     @Transactional
     public ReminderResponse create(ReminderRequest request) {
+        ReminderList list = resolveList(request.listId());
         Reminder reminder = Reminder.builder()
                 .title(request.title())
                 .note(request.note())
+                .list(list)
                 .build();
         return ReminderResponse.from(reminderRepository.save(reminder));
     }
@@ -46,6 +52,9 @@ public class DefaultReminderService implements ReminderService {
     public ReminderResponse update(Long id, ReminderRequest request) {
         Reminder reminder = getReminder(id);
         reminder.update(request.title(), request.note());
+        if (request.listId() != null) {
+            reminder.assignList(resolveList(request.listId()));
+        }
         return ReminderResponse.from(reminder);
     }
 
@@ -60,12 +69,17 @@ public class DefaultReminderService implements ReminderService {
     @Override
     @Transactional
     public void delete(Long id) {
-        Reminder reminder = getReminder(id);
-        reminderRepository.delete(reminder);
+        reminderRepository.delete(getReminder(id));
     }
 
     private Reminder getReminder(Long id) {
         return reminderRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Reminder not found: " + id));
+    }
+
+    private ReminderList resolveList(Long listId) {
+        if (listId == null) return null;
+        return reminderListRepository.findById(listId)
+                .orElseThrow(() -> new EntityNotFoundException("ReminderList not found: " + listId));
     }
 }
