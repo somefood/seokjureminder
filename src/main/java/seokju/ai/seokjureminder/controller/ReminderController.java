@@ -18,8 +18,11 @@ public class ReminderController {
     private final ReminderService reminderService;
 
     @GetMapping
-    public List<ReminderResponse> getReminders(@RequestParam(required = false) Long listId) {
-        return reminderService.findAll(listId);
+    public List<ReminderResponse> getReminders(
+            @RequestParam(required = false) Long listId,
+            @RequestParam(required = false) String view,
+            @RequestParam(required = false) String q) {
+        return reminderService.findAll(listId, view, q);
     }
 
     @GetMapping("/{id}")

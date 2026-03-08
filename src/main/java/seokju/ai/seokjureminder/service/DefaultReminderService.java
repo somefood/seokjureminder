@@ -12,6 +12,8 @@ import seokju.ai.seokjureminder.repository.ReminderListRepository;
 import seokju.ai.seokjureminder.repository.ReminderRepository;
 import seokju.ai.seokjureminder.service.ports.in.ReminderService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,10 +25,25 @@ public class DefaultReminderService implements ReminderService {
     private final ReminderListRepository reminderListRepository;
 
     @Override
-    public List<ReminderResponse> findAll(Long listId) {
-        List<Reminder> reminders = listId != null
-                ? reminderRepository.findByListId(listId)
-                : reminderRepository.findAll();
+    public List<ReminderResponse> findAll(Long listId, String view, String q) {
+        List<Reminder> reminders;
+
+        if (q != null && !q.isBlank()) {
+            reminders = reminderRepository.searchByTitleOrNote(q.trim());
+        } else if (listId != null) {
+            reminders = reminderRepository.findByListId(listId);
+        } else if ("today".equals(view)) {
+            reminders = reminderRepository.findByIsDoneFalseAndDueDate(LocalDate.now());
+        } else if ("scheduled".equals(view)) {
+            reminders = reminderRepository.findByIsDoneFalseAndDueDateIsNotNullOrderByDueDateAscDueTimeAsc();
+        } else if ("completed".equals(view)) {
+            reminders = reminderRepository.findByIsDoneTrueAndCompletedAtAfter(
+                    LocalDateTime.now().minusDays(30));
+        } else {
+            // "all" or default: all undone
+            reminders = reminderRepository.findByIsDoneFalse();
+        }
+
         return reminders.stream().map(ReminderResponse::from).toList();
     }
 
@@ -43,6 +60,8 @@ public class DefaultReminderService implements ReminderService {
                 .title(request.title())
                 .note(request.note())
                 .list(list)
+                .dueDate(request.dueDate())
+                .dueTime(request.dueTime())
                 .build();
         return ReminderResponse.from(reminderRepository.save(reminder));
     }
@@ -51,7 +70,7 @@ public class DefaultReminderService implements ReminderService {
     @Transactional
     public ReminderResponse update(Long id, ReminderRequest request) {
         Reminder reminder = getReminder(id);
-        reminder.update(request.title(), request.note());
+        reminder.update(request.title(), request.note(), request.dueDate(), request.dueTime());
         if (request.listId() != null) {
             reminder.assignList(resolveList(request.listId()));
         }

@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "reminders")
@@ -31,6 +33,12 @@ public class Reminder {
     @JoinColumn(name = "list_id")
     private ReminderList list;
 
+    private LocalDate dueDate;
+
+    private LocalTime dueTime;
+
+    private LocalDateTime completedAt;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -46,16 +54,20 @@ public class Reminder {
     }
 
     @Builder
-    public Reminder(String title, String note, ReminderList list) {
+    public Reminder(String title, String note, ReminderList list, LocalDate dueDate, LocalTime dueTime) {
         this.title = title;
         this.note = note;
         this.list = list;
+        this.dueDate = dueDate;
+        this.dueTime = dueTime;
         this.isDone = false;
     }
 
-    public void update(String title, String note) {
+    public void update(String title, String note, LocalDate dueDate, LocalTime dueTime) {
         if (title != null) this.title = title;
         if (note != null) this.note = note;
+        this.dueDate = dueDate;
+        this.dueTime = dueTime;
     }
 
     public void assignList(ReminderList list) {
@@ -64,5 +76,6 @@ public class Reminder {
 
     public void toggleDone() {
         this.isDone = !this.isDone;
+        this.completedAt = this.isDone ? LocalDateTime.now() : null;
     }
 }

@@ -6,10 +6,10 @@ import { ReminderRequest } from "@/lib/types";
 
 const QUERY_KEY = ["reminders"];
 
-export function useReminders(listId?: number) {
+export function useReminders(params?: { listId?: number; view?: string; q?: string }) {
   return useQuery({
-    queryKey: listId != null ? [...QUERY_KEY, listId] : QUERY_KEY,
-    queryFn: () => api.reminders.list(listId),
+    queryKey: [...QUERY_KEY, params],
+    queryFn: () => api.reminders.list(params),
   });
 }
 

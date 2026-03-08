@@ -17,8 +17,14 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   reminders: {
-    list: (listId?: number) =>
-      request<Reminder[]>(`/api/reminders${listId != null ? `?listId=${listId}` : ""}`),
+    list: (params?: { listId?: number; view?: string; q?: string }) => {
+      const p = new URLSearchParams();
+      if (params?.listId != null) p.set("listId", String(params.listId));
+      if (params?.view) p.set("view", params.view);
+      if (params?.q) p.set("q", params.q);
+      const qs = p.toString();
+      return request<Reminder[]>(`/api/reminders${qs ? `?${qs}` : ""}`);
+    },
     get: (id: number) => request<Reminder>(`/api/reminders/${id}`),
     create: (body: ReminderRequest) =>
       request<Reminder>("/api/reminders", { method: "POST", body: JSON.stringify(body) }),

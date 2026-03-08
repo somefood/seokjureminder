@@ -4,8 +4,12 @@ import { useReminders } from "@/hooks/useReminders";
 import { ReminderItem } from "./ReminderItem";
 import { AddReminder } from "./AddReminder";
 
-export function ReminderList() {
-  const { data: reminders = [], isLoading, isError } = useReminders();
+interface Props {
+  params?: { listId?: number; view?: string; q?: string };
+}
+
+export function ReminderList({ params }: Props) {
+  const { data: reminders = [], isLoading, isError } = useReminders(params);
 
   if (isLoading) {
     return (
@@ -28,7 +32,7 @@ export function ReminderList() {
       {reminders.map((reminder) => (
         <ReminderItem key={reminder.id} reminder={reminder} />
       ))}
-      <AddReminder />
+      <AddReminder listId={params?.listId} />
     </div>
   );
 }

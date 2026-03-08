@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUIStore } from "@/stores/uiStore";
 import { useReminders } from "@/hooks/useReminders";
 import { useLists, useCreateList, useDeleteList } from "@/hooks/useLists";
@@ -13,20 +13,31 @@ const SMART_LISTS = [
 ];
 
 export function Sidebar() {
-  const { selectedView, setSelectedView } = useUIStore();
-  const { data: reminders = [] } = useReminders();
+  const { selectedView, setSelectedView, setSearchQuery } = useUIStore();
   const { data: lists = [] } = useLists();
   const createList = useCreateList();
   const deleteList = useDeleteList();
 
   const [addingList, setAddingList] = useState(false);
   const [newListName, setNewListName] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+
+  // 300ms debounce for search
+  useEffect(() => {
+    const timer = setTimeout(() => setSearchQuery(searchInput), 300);
+    return () => clearTimeout(timer);
+  }, [searchInput, setSearchQuery]);
+
+  const { data: todayReminders = [] } = useReminders({ view: "today" });
+  const { data: scheduledReminders = [] } = useReminders({ view: "scheduled" });
+  const { data: allReminders = [] } = useReminders({ view: "all" });
+  const { data: completedReminders = [] } = useReminders({ view: "completed" });
 
   const counts = {
-    today: reminders.filter((r) => !r.isDone).length,
-    scheduled: reminders.filter((r) => !r.isDone).length,
-    all: reminders.filter((r) => !r.isDone).length,
-    completed: reminders.filter((r) => r.isDone).length,
+    today: todayReminders.length,
+    scheduled: scheduledReminders.length,
+    all: allReminders.length,
+    completed: completedReminders.length,
   };
 
   function handleAddList() {
@@ -68,8 +79,37 @@ export function Sidebar() {
           fontSize: 15,
         }}
       >
-        <span>🔍</span>
-        <span>검색</span>
+        <span style={{ fontSize: 13 }}>🔍</span>
+        <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="검색"
+          style={{
+            flex: 1,
+            border: "none",
+            outline: "none",
+            background: "transparent",
+            fontSize: 15,
+            color: "var(--color-label)",
+            fontFamily: "var(--font-system)",
+          }}
+        />
+        {searchInput && (
+          <button
+            onClick={() => setSearchInput("")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "var(--color-gray)",
+              cursor: "pointer",
+              fontSize: 14,
+              padding: 0,
+              lineHeight: 1,
+            }}
+          >
+            ×
+          </button>
+        )}
       </div>
 
       {/* 스마트 리스트 2×2 그리드 */}

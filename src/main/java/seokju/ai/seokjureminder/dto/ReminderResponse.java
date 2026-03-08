@@ -2,7 +2,9 @@ package seokju.ai.seokjureminder.dto;
 
 import seokju.ai.seokjureminder.domain.Reminder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public record ReminderResponse(
         Long id,
@@ -10,6 +12,9 @@ public record ReminderResponse(
         String note,
         Boolean isDone,
         Long listId,
+        LocalDate dueDate,
+        LocalTime dueTime,
+        LocalDateTime completedAt,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -20,6 +25,9 @@ public record ReminderResponse(
                 reminder.getNote(),
                 reminder.getIsDone(),
                 reminder.getList() != null ? reminder.getList().getId() : null,
+                reminder.getDueDate(),
+                reminder.getDueTime(),
+                reminder.getCompletedAt(),
                 reminder.getCreatedAt(),
                 reminder.getUpdatedAt()
         );

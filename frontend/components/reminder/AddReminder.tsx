@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useCreateReminder } from "@/hooks/useReminders";
 
-export function AddReminder() {
+export function AddReminder({ listId }: { listId?: number }) {
   const [active, setActive] = useState(false);
   const [title, setTitle] = useState("");
   const createReminder = useCreateReminder();
 
   function handleSave() {
     if (title.trim()) {
-      createReminder.mutate({ title: title.trim() });
+      createReminder.mutate({ title: title.trim(), listId: listId ?? null });
     }
     setTitle("");
     setActive(false);

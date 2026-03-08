@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ReminderService {
 
-    List<ReminderResponse> findAll(Long listId);
+    List<ReminderResponse> findAll(Long listId, String view, String q);
 
     ReminderResponse findById(Long id);
 
