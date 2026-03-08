@@ -42,13 +42,10 @@ export function Sidebar() {
 
   function handleAddList() {
     const name = newListName.trim();
-    if (!name) return;
-    createList.mutate({ name }, {
-      onSuccess: () => {
-        setNewListName("");
-        setAddingList(false);
-      },
-    });
+    if (!name || createList.isPending) return;
+    setAddingList(false);
+    setNewListName("");
+    createList.mutate({ name });
   }
 
   return (
