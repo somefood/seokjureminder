@@ -15,12 +15,12 @@
 - [x] CORS 설정 (`localhost:3000` 허용) — `WebMvcConfigurer`
 
 ### Reminder Entity
-- [ ] `domain/Reminder.java` Entity 생성
-  - [ ] `id` (PK, auto-increment)
-  - [ ] `title` (not null)
-  - [ ] `note` (nullable)
-  - [ ] `isDone` (default false)
-  - [ ] `createdAt`, `updatedAt` (`@PrePersist`, `@PreUpdate`)
+- [x] `domain/Reminder.java` Entity 생성
+  - [x] `id` (PK, auto-increment)
+  - [x] `title` (not null)
+  - [x] `note` (nullable)
+  - [x] `isDone` (default false)
+  - [x] `createdAt`, `updatedAt` (`@PrePersist`, `@PreUpdate`)
 
 ### Repository / Service / Controller
 - [ ] `repository/ReminderRepository.java` (JpaRepository)
