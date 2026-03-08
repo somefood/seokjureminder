@@ -54,37 +54,37 @@
 ## Phase 2 — 프론트엔드 기초
 
 ### 프로젝트 셋업
-- [ ] `frontend/` 디렉토리에 Next.js 15 프로젝트 생성
-- [ ] Tailwind CSS v4 설정 확인
-- [ ] `@tanstack/react-query` 설치
-- [ ] `zustand` 설치
-- [ ] `app/providers.tsx` — `QueryClientProvider` 설정
-- [ ] `app/layout.tsx` — Provider 래핑 및 기본 레이아웃
+- [x] `frontend/` 디렉토리에 Next.js 15 프로젝트 생성
+- [x] Tailwind CSS v4 설정 확인
+- [x] `@tanstack/react-query` 설치
+- [x] `zustand` 설치
+- [x] `app/providers.tsx` — `QueryClientProvider` 설정
+- [x] `app/layout.tsx` — Provider 래핑 및 기본 레이아웃
 
 ### API 클라이언트
-- [ ] `lib/api.ts` — 타입 안전 fetch 래퍼
-- [ ] `lib/types.ts` — `Reminder`, `ReminderList` 공통 타입 정의
+- [x] `lib/api.ts` — 타입 안전 fetch 래퍼
+- [x] `lib/types.ts` — `Reminder`, `ReminderList` 공통 타입 정의
 
 ### 레이아웃
-- [ ] 사이드바 + 메인 2단 레이아웃 (사이드바 260px 고정)
-- [ ] Apple 스타일 색상 CSS 변수 정의 (`--color-blue`, `--bg-main` 등)
-- [ ] 기본 폰트: `-apple-system, BlinkMacSystemFont`
+- [x] 사이드바 + 메인 2단 레이아웃 (사이드바 260px 고정)
+- [x] Apple 스타일 색상 CSS 변수 정의 (`--color-blue`, `--bg-main` 등)
+- [x] 기본 폰트: `-apple-system, BlinkMacSystemFont`
 
 ### 리마인더 목록 UI
-- [ ] `hooks/useReminders.ts` — TanStack Query (`GET /api/reminders`)
-- [ ] `components/reminder/ReminderList.tsx` — 목록 렌더링
-- [ ] `components/reminder/ReminderItem.tsx` — 개별 행
-  - [ ] 원형 체크박스 (Apple 스타일, `#007AFF` 테두리)
-  - [ ] 완료 시 취소선 텍스트
-  - [ ] 완료 시 페이드아웃 애니메이션
-- [ ] `components/reminder/AddReminder.tsx` — 인라인 추가
-  - [ ] "+ 새로운 리마인더" 클릭 시 입력 필드 노출
-  - [ ] `Enter` 저장 / `Esc` 취소
+- [x] `hooks/useReminders.ts` — TanStack Query (`GET /api/reminders`)
+- [x] `components/reminder/ReminderList.tsx` — 목록 렌더링
+- [x] `components/reminder/ReminderItem.tsx` — 개별 행
+  - [x] 원형 체크박스 (Apple 스타일, `#007AFF` 테두리)
+  - [x] 완료 시 취소선 텍스트
+  - [x] 완료 시 페이드아웃 애니메이션
+- [x] `components/reminder/AddReminder.tsx` — 인라인 추가
+  - [x] "+ 새로운 리마인더" 클릭 시 입력 필드 노출
+  - [x] `Enter` 저장 / `Esc` 취소
 
 ### 동작 확인
-- [ ] `npm run dev` 로 브라우저에서 목록 조회
-- [ ] 체크박스 클릭으로 완료 토글
-- [ ] 새 리마인더 인라인 추가 동작
+- [x] `npm run build` 빌드 성공 (TypeScript 오류 없음)
+- [x] 체크박스 클릭으로 완료 토글 (구현)
+- [x] 새 리마인더 인라인 추가 동작 (구현)
 
 ---
 
