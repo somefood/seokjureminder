@@ -44,10 +44,10 @@
 - [x] `openapi.yml` OpenAPI 3.1 스펙 작성
 
 ### 시드 데이터 & 검증
-- [ ] `resources/data.sql` 초기 샘플 데이터 작성
+- [x] `resources/data.sql` 초기 샘플 데이터 작성
 - [x] 서버 기동 확인 (`./gradlew bootRun`)
 - [x] H2 콘솔에서 테이블/데이터 확인
-- [ ] curl로 전체 엔드포인트 동작 확인
+- [x] curl로 전체 엔드포인트 동작 확인
 
 ---
 
